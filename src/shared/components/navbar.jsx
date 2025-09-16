@@ -45,8 +45,8 @@ const Navbar = () => {
                                     key={item.name}
                                     to={item.href}
                                     className={`px-3 py-2 text-sm font-medium transition-colors duration-200 ${location.pathname === item.href
-                                            ? 'text-teal-600 border-b-2 border-teal-600'
-                                            : 'text-gray-700 hover:text-teal-600 hover:border-b-2 hover:border-teal-300'
+                                        ? 'text-teal-600 border-b-2 border-teal-600'
+                                        : 'text-gray-700 hover:text-teal-600 hover:border-b-2 hover:border-teal-300'
                                         }`}
                                 >
                                     {item.name}
@@ -60,11 +60,14 @@ const Navbar = () => {
                         <Button
                             variant="ghost"
                             className="text-gray-700 hover:text-teal-600 flex items-center space-x-2"
+                            asChild
                         >
-                            <div className="w-5 h-5 bg-teal-100 rounded-full flex items-center justify-center">
-                                <span className="text-teal-600 text-xs font-bold">AI</span>
-                            </div>
-                            <span>AI Assistance</span>
+                            <Link to="/ai-assistant">
+                                <div className="w-5 h-5 bg-teal-100 rounded-full flex items-center justify-center">
+                                    <span className="text-teal-600 text-xs font-bold">AI</span>
+                                </div>
+                                <span>AI Assistance</span>
+                            </Link>
                         </Button>
                         <Button
                             className="bg-teal-600 hover:bg-teal-700 text-white px-6"
@@ -99,8 +102,8 @@ const Navbar = () => {
                                     key={item.name}
                                     to={item.href}
                                     className={`block px-3 py-2 text-base font-medium transition-colors duration-200 ${location.pathname === item.href
-                                            ? 'text-teal-600 bg-teal-50'
-                                            : 'text-gray-700 hover:text-teal-600 hover:bg-gray-50'
+                                        ? 'text-teal-600 bg-teal-50'
+                                        : 'text-gray-700 hover:text-teal-600 hover:bg-gray-50'
                                         }`}
                                     onClick={() => setIsMobileMenuOpen(false)}
                                 >
@@ -113,11 +116,14 @@ const Navbar = () => {
                                 <Button
                                     variant="ghost"
                                     className="w-full text-gray-700 hover:text-teal-600 flex items-center justify-center space-x-2"
+                                    asChild
                                 >
-                                    <div className="w-5 h-5 bg-teal-100 rounded-full flex items-center justify-center">
-                                        <span className="text-teal-600 text-xs font-bold">AI</span>
-                                    </div>
-                                    <span>AI Assistance</span>
+                                    <Link to="/ai-assistant" onClick={() => setIsMobileMenuOpen(false)}>
+                                        <div className="w-5 h-5 bg-teal-100 rounded-full flex items-center justify-center">
+                                            <span className="text-teal-600 text-xs font-bold">AI</span>
+                                        </div>
+                                        <span>AI Assistance</span>
+                                    </Link>
                                 </Button>
                                 <Button
                                     className="w-full bg-teal-600 hover:bg-teal-700 text-white"
