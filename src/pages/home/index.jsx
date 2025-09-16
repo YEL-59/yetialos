@@ -1,13 +1,16 @@
 
-import { HeroSection, NearbyRestaurants, TrendingRestaurants, LocalFlavor } from './home-components'
+import { HeroSection, NearbyRestaurants, TrendingRestaurants, LocalFlavor, FoodDestinations, CommunityTestimonials } from './home-components'
 
 const Home = () => {
     return (
         <div className="space-y-0">
             <HeroSection />
             <TrendingRestaurants />
-            <LocalFlavor />
             <NearbyRestaurants />
+            <LocalFlavor />
+            <FoodDestinations />
+            <CommunityTestimonials />
+
         </div>
     )
 }
