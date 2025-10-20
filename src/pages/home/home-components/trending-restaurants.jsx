@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight, Heart, MapPin, Users } from 'lucide-react'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 const TrendingRestaurants = () => {
     const [currentSlide, setCurrentSlide] = useState(0)
@@ -139,14 +140,15 @@ const TrendingRestaurants = () => {
                         >
                             {restaurants.map((restaurant) => (
                                 <div key={restaurant.id} className="w-1/3 flex-shrink-0 px-3">
-                                    <Card className="group hover:shadow-xl transition-all duration-300 border-0 shadow-md">
-                                        <div className="relative overflow-hidden rounded-t-lg">
-                                            {/* Restaurant Image */}
-                                            <img
-                                                src={restaurant.image}
-                                                alt={restaurant.name}
-                                                className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                                            />
+                                    <Link to={`/restaurant/${restaurant.id}`} state={{ restaurant }} className="block">
+                                        <Card className="group hover:shadow-xl transition-all duration-300 border-0 shadow-md">
+                                            <div className="relative overflow-hidden rounded-t-lg">
+                                                {/* Restaurant Image */}
+                                                <img
+                                                    src={restaurant.image}
+                                                    alt={restaurant.name}
+                                                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                                                />
 
                                             {/* Heart Icon - Toggle Favorite */}
                                             <Button
@@ -206,6 +208,7 @@ const TrendingRestaurants = () => {
                                             </div>
                                         </CardContent>
                                     </Card>
+                                    </Link>
                                 </div>
                             ))}
                         </div>

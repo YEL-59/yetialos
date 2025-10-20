@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { MapPin, Clock, Star, Phone } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 const Restaurant = () => {
     const restaurants = [
@@ -115,8 +116,10 @@ const Restaurant = () => {
                             </div>
 
                             <div className="flex gap-2 pt-2">
-                                <Button size="sm" className="flex-1">
-                                    View Details
+                                <Button size="sm" className="flex-1" asChild>
+                                    <Link to={`/restaurant/${restaurant.id}`} state={{ restaurant }}>
+                                        View Details
+                                    </Link>
                                 </Button>
                                 <Button size="sm" variant="outline" className="flex-1">
                                     Write Review

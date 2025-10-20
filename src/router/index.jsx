@@ -8,6 +8,7 @@ import Review from '@/pages/review'
 import Team from '@/pages/team'
 import AIAssistant from '@/pages/ai-assistant'
 import ErrorPage from '@/pages/error'
+import RestaurantDetails from '@/pages/restaurant/details'
 
 export const router = createBrowserRouter([
     {
@@ -30,6 +31,10 @@ export const router = createBrowserRouter([
             {
                 path: 'restaurant',
                 element: <Restaurant />,
+            },
+            {
+                path: 'restaurant/:id',
+                element: <RestaurantDetails />,
             },
             {
                 path: 'review',
