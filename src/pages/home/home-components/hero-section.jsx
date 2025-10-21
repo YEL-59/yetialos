@@ -13,7 +13,7 @@ const HeroSection = () => {
     }
 
     return (
-        <section className="relative min-h-[800px] flex items-center justify-center overflow-hidden">
+        <section className="relative min-h-[600px] md:min-h-[800px] flex items-center justify-center overflow-hidden">
             {/* Background Image with Overlay */}
             <div className="absolute inset-0 z-0">
                 <img
@@ -31,8 +31,8 @@ const HeroSection = () => {
             </div>
 
             {/* Content Container - Centered with rounded background */}
-            <div className="relative z-10 text-center max-w-7xl mx-auto px-6">
-                <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-white/10">
+            <div className="relative z-10 text-center max-w-7xl mx-auto px-4 sm:px-6">
+                <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-6 md:p-12 border border-white/10">
                     {/* Main Heading - Exact text from image */}
                     <div className="space-y-6">
                         <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-tight max-w-7xl mx-auto">
@@ -48,8 +48,8 @@ const HeroSection = () => {
                     {/* Search Bar - Matching the exact design from image */}
                     <div className="mt-8">
                         <form onSubmit={handleSearch} className="relative">
-                            <div className="flex items-center bg-white rounded-xl shadow-2xl overflow-hidden max-w-2xl mx-auto border border-gray-100">
-                                <div className="flex-1 flex items-center py-4 px-6">
+                            <div className="flex items-center bg-white rounded-xl shadow-2xl overflow-hidden max-w-full sm:max-w-2xl mx-auto border border-gray-100">
+                                <div className="flex-1 flex items-center py-3 px-4 sm:py-4 sm:px-6">
                                     <Search className="h-5 w-5 text-gray-400 mr-3 flex-shrink-0" />
                                     <input
                                         type="text"
@@ -61,7 +61,7 @@ const HeroSection = () => {
                                 </div>
                                 <Button
                                     type="submit"
-                                    className="bg-teal-500 hover:bg-teal-600 text-white px-8 py-4 rounded-lg h-auto font-medium text-base m-1"
+                                    className="bg-teal-500 hover:bg-teal-600 text-white px-5 py-3 sm:px-8 sm:py-4 rounded-lg h-auto font-medium text-sm sm:text-base m-1"
                                 >
                                     Find Restaurants
                                 </Button>
