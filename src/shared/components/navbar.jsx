@@ -2,10 +2,12 @@ import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import logo from "../../assects/logo.png";
 
 const Navbar = () => {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [logoError, setLogoError] = useState(false);
 
   const navigation = [
     { name: "Home", href: "/" },
@@ -21,17 +23,20 @@ const Navbar = () => {
           <div className="flex-shrink-0 flex items-center">
             <Link to="/" className="flex items-center space-x-2">
               <div className="w-8 h-8 flex items-center justify-center">
-                <img
-                  src="/src/assets/logo.svg"
-                  alt="YetiAlos Logo"
-                  className="w-8 h-8 object-contain"
-                  onError={(e) => {
-                    // Fallback if image doesn't load - show a simple gradient circle with Y
-                    e.target.outerHTML = `<div class="w-8 h-8 bg-gradient-to-r from-teal-400 to-teal-600 rounded-lg flex items-center justify-center"><span class="text-white font-bold text-sm">Y</span></div>`;
-                  }}
-                />
+                {logoError ? (
+                  <div className="w-8 h-8 bg-gradient-to-r from-teal-400 to-teal-600 rounded-lg flex items-center justify-center">
+                    <span className="text-white font-bold text-sm">Y</span>
+                  </div>
+                ) : (
+                  <img
+                    src={logo}
+                    alt="YetiAlos Logo"
+                    className="w-8 h-8 object-contain"
+                    onError={() => setLogoError(true)}
+                  />
+                )}
               </div>
-              <span className="text-xl font-bold text-gray-900">YetiAlos</span>
+              <span className="text-xl font-bold text-gray-900">FoodieRev</span>
             </Link>
           </div>
 

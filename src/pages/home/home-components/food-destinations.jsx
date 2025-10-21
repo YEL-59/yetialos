@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const FoodDestinations = () => {
   const [favorites, setFavorites] = useState(new Set([2])); // Initially liked destination IDs
@@ -115,12 +116,14 @@ const FoodDestinations = () => {
 
         {/* Call to Action */}
         <div className="text-center mt-12">
-          <Button
-            size="lg"
-            className="bg-teal-600 hover:bg-teal-700 text-white px-8"
-          >
-            Explore All Destinations
-          </Button>
+          <Link to="/restaurant" className="block">
+            <Button
+              size="lg"
+              className="bg-teal-600 hover:bg-teal-700 text-white px-8"
+            >
+              Explore All Destinations
+            </Button>
+          </Link>
         </div>
       </div>
     </section>

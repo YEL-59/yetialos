@@ -22,6 +22,7 @@ import {
   DollarSign,
 } from "lucide-react";
 import { Link, useParams, useLocation } from "react-router-dom";
+import { CommunityTestimonials } from "../home/home-components";
 
 const fallback = {
   id: "el-nacional",
@@ -347,6 +348,8 @@ const RestaurantDetails = () => {
       >
         <ArrowLeft className="h-4 w-4 mr-1" /> Back to Restaurants
       </Link>
+
+      <CommunityTestimonials />
     </div>
   );
 };

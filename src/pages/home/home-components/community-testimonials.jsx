@@ -1,9 +1,7 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight, Star, Quote } from "lucide-react";
 
-const CommunityTestimonials = () => {
+export default function CommunityTestimonials() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [itemsPerView, setItemsPerView] = useState(3);
 
@@ -11,64 +9,69 @@ const CommunityTestimonials = () => {
     {
       id: 1,
       name: "Sarah Johnson",
+      location: "New York",
       avatar:
         "https://images.unsplash.com/photo-1494790108755-2616b612b5c4?w=80&h=80&fit=crop&crop=face",
       rating: 5,
       review:
-        "The culinary haven did not disappoint. The amazing cuisine paired with a cozy atmosphere made this a perfect dining spot to try. The attention to detail in every dish was remarkable, and the service was impeccable.",
+        "This platform helped me discover the most amazing hidden gems in my city. The reviews are honest and detailed, making it easy to choose the perfect restaurant for any occasion.",
     },
     {
       id: 2,
       name: "Michael Chen",
+      location: "San Francisco",
       avatar:
         "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face",
       rating: 5,
       review:
-        "Outstanding experience! The flavors were incredible and the presentation was top-notch. It's clear my dining expectations were met. The sommelier's wine recommendations perfectly complemented each course.",
+        "As a food blogger, I appreciate how easy it is to share my dining experiences here. The community is engaged and the interface is user-friendly. Highly recommend!",
     },
     {
       id: 3,
       name: "Emma Rodriguez",
+      location: "Miami",
       avatar:
         "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face",
       rating: 5,
       review:
-        "What an amazing find! The food was exceptional and the service was outstanding. This place has now become my favorite restaurant in the city. The chef's attention to seasonal ingredients really shows in every bite.",
+        "I've found my new favorite restaurants through this site. The review quality is excellent and I love being able to contribute to helping others find great food.",
     },
     {
       id: 4,
       name: "David Wilson",
+      location: "Chicago",
       avatar:
         "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face",
       rating: 5,
       review:
-        "Absolutely phenomenal dining experience! Every course was a masterpiece, and the staff went above and beyond to make our evening special. The ambiance was perfect for our anniversary celebration.",
+        "Absolutely phenomenal platform! Every recommendation has been spot-on, and the community is incredibly helpful. This has transformed how I discover new restaurants.",
     },
     {
       id: 5,
       name: "Lisa Thompson",
+      location: "Seattle",
       avatar:
         "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=80&h=80&fit=crop&crop=face",
       rating: 5,
       review:
-        "This restaurant exceeded all expectations. The innovative menu, exceptional service, and beautiful atmosphere created an unforgettable evening. I can't wait to return and try their seasonal specials.",
+        "This service exceeded all my expectations. The curated recommendations and authentic reviews have helped me find amazing dining experiences I never would have discovered.",
     },
     {
       id: 6,
       name: "James Anderson",
+      location: "Boston",
       avatar:
         "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=face",
       rating: 5,
       review:
-        "From the moment we walked in, we were treated like VIPs. The food was extraordinary, with each dish telling its own story. This is definitely a place I'll be recommending to all my friends.",
+        "From the moment I started using this platform, I've been impressed. The interface is intuitive, the reviews are trustworthy, and I've discovered so many great places.",
     },
   ];
 
-  // Adjust items per view based on screen size
   useEffect(() => {
     const updateItemsPerView = () => {
       if (window.innerWidth < 640) setItemsPerView(1);
-      else if (window.innerWidth < 1024) setItemsPerView(2);
+      else if (window.innerWidth < 768) setItemsPerView(2);
       else setItemsPerView(3);
     };
     updateItemsPerView();
@@ -94,14 +97,14 @@ const CommunityTestimonials = () => {
   };
 
   return (
-    <section className="py-12 md:py-16 bg-gray-50">
+    <section className="py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-10 md:mb-12">
-          <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-3 md:mb-4">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
             What Our Community Says
           </h2>
-          <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Join thousands of satisfied food lovers who trust our platform to
             discover their next great meal.
           </p>
@@ -110,28 +113,32 @@ const CommunityTestimonials = () => {
         {/* Testimonials Slider */}
         <div className="relative">
           {/* Navigation Buttons */}
-          <Button
-            variant="outline"
-            size="icon"
-            className="absolute left-1 top-1/2 -translate-y-1/2 z-10 bg-white shadow-md hover:shadow-lg transition rounded-full w-10 h-10 sm:w-12 sm:h-12"
+          <button
             onClick={prevSlide}
             disabled={currentSlide === 0}
+            className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center transition-all ${
+              currentSlide === 0
+                ? "opacity-40 cursor-not-allowed"
+                : "hover:shadow-xl hover:bg-gray-50"
+            }`}
           >
-            <ChevronLeft className="h-5 w-5" />
-          </Button>
+            <ChevronLeft className="h-5 w-5 text-gray-700" />
+          </button>
 
-          <Button
-            variant="outline"
-            size="icon"
-            className="absolute right-1 top-1/2 -translate-y-1/2 z-10 bg-white shadow-md hover:shadow-lg transition rounded-full w-10 h-10 sm:w-12 sm:h-12"
+          <button
             onClick={nextSlide}
             disabled={currentSlide === maxSlide}
+            className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center transition-all ${
+              currentSlide === maxSlide
+                ? "opacity-40 cursor-not-allowed"
+                : "hover:shadow-xl hover:bg-gray-50"
+            }`}
           >
-            <ChevronRight className="h-5 w-5" />
-          </Button>
+            <ChevronRight className="h-5 w-5 text-gray-700" />
+          </button>
 
           {/* Cards Container */}
-          <div className="overflow-hidden mx-8 sm:mx-12">
+          <div className="overflow-hidden mx-12 sm:mx-16">
             <div
               className="flex transition-transform duration-500 ease-in-out"
               style={{
@@ -144,73 +151,69 @@ const CommunityTestimonials = () => {
               {testimonials.map((testimonial) => (
                 <div
                   key={testimonial.id}
-                  className="w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-3 sm:px-4"
+                  className="flex-shrink-0 px-3"
+                  style={{ width: `${100 / itemsPerView}%` }}
                 >
-                  <Card className="group hover:shadow-xl transition-all duration-300 border-0 shadow-md bg-white h-full">
-                    <CardContent className="p-5 sm:p-6">
-                      <div className="space-y-4">
-                        {/* Star Rating */}
-                        <div className="flex items-center justify-center space-x-1">
-                          {renderStars(testimonial.rating)}
-                        </div>
-
-                        {/* Review Text */}
-                        <div className="text-center">
-                          <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
-                            "{testimonial.review}"
-                          </p>
-                        </div>
-
-                        {/* User Profile */}
-                        <div className="flex items-center justify-center space-x-3 pt-4 border-t border-gray-100">
-                          <img
-                            src={testimonial.avatar}
-                            alt={testimonial.name}
-                            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover"
-                          />
-                          <div className="text-center">
-                            <h4 className="font-semibold text-gray-900 text-sm sm:text-base">
-                              {testimonial.name}
-                            </h4>
-                            <p className="text-xs sm:text-sm text-gray-500">
-                              Verified Customer
-                            </p>
-                          </div>
+                  <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-6 h-full">
+                    <div className="space-y-4">
+                      {/* Quote Icon */}
+                      <div className="flex justify-start">
+                        <div className="w-10 h-10 bg-teal-50 rounded-full flex items-center justify-center">
+                          <Quote className="h-5 w-5 text-teal-600" />
                         </div>
                       </div>
-                    </CardContent>
-                  </Card>
+
+                      {/* Star Rating */}
+                      <div className="flex items-center space-x-1">
+                        {renderStars(testimonial.rating)}
+                      </div>
+
+                      {/* Review Text */}
+                      <div>
+                        <p className="text-gray-700 leading-relaxed text-sm line-clamp-4">
+                          "{testimonial.review}"
+                        </p>
+                      </div>
+
+                      {/* User Profile */}
+                      <div className="flex items-center space-x-3 pt-4">
+                        <img
+                          src={testimonial.avatar}
+                          alt={testimonial.name}
+                          className="w-12 h-12 rounded-full object-cover"
+                        />
+                        <div>
+                          <h4 className="font-semibold text-gray-900 text-sm">
+                            {testimonial.name}
+                          </h4>
+                          <p className="text-xs text-gray-500">
+                            {testimonial.location}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Slide Indicators */}
-          <div className="flex justify-center mt-6 sm:mt-8 space-x-2">
+          <div className="flex justify-center mt-8 space-x-2">
             {Array.from({ length: maxSlide + 1 }).map((_, index) => (
               <button
                 key={index}
-                className={`w-2 h-2 rounded-full transition-colors ${
-                  index === currentSlide ? "bg-teal-600" : "bg-gray-300"
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  index === currentSlide
+                    ? "bg-teal-600 w-8"
+                    : "bg-gray-300 hover:bg-gray-400"
                 }`}
                 onClick={() => setCurrentSlide(index)}
               />
             ))}
           </div>
         </div>
-
-        {/* Call to Action */}
-        <div className="text-center mt-10 md:mt-12">
-          <Button
-            size="lg"
-            className="bg-teal-600 hover:bg-teal-700 text-white px-6 sm:px-8 text-sm sm:text-base"
-          >
-            Share Your Experience
-          </Button>
-        </div>
       </div>
     </section>
   );
-};
-
-export default CommunityTestimonials;
+}
