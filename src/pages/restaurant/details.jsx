@@ -20,11 +20,28 @@ import {
   User,
   Sparkles,
   DollarSign,
+  X,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { Link, useParams, useLocation } from "react-router-dom";
 import { CommunityTestimonials } from "../home/home-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Pencil } from "lucide-react";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetClose,
+} from "@/components/ui/sheet";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogClose,
+} from "@/components/ui/dialog";
 
 const fallback = {
   id: "el-nacional",
@@ -179,6 +196,38 @@ const RestaurantDetails = () => {
     }
   };
 
+  // Lightbox state and helpers
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+  const lightboxImages = [
+    ...(restaurant.images || []),
+    ...(restaurant.gallery || [])
+      .map((g) => g.src)
+      .filter((src) => !(restaurant.images || []).includes(src)),
+  ];
+  const openLightbox = (index) => {
+    setLightboxIndex(Math.max(0, index ?? 0));
+    setLightboxOpen(true);
+  };
+  const closeLightbox = () => setLightboxOpen(false);
+  const prevImage = () =>
+    setLightboxIndex(
+      (i) => (i - 1 + lightboxImages.length) % lightboxImages.length
+    );
+  const nextImage = () =>
+    setLightboxIndex((i) => (i + 1) % lightboxImages.length);
+
+  useEffect(() => {
+    if (!lightboxOpen) return;
+    const onKey = (e) => {
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") prevImage();
+      if (e.key === "ArrowRight") nextImage();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [lightboxOpen]);
+
   // Reviews data to match screenshot
   const reviewDistribution = [
     { label: "Excellent", count: 3332 },
@@ -198,17 +247,13 @@ const RestaurantDetails = () => {
   return (
     <div className="container mx-auto space-y-8">
       {/* Header */}
-      <div className="flex items-start justify-between">
+      <div className="flex flex-wrap items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold mb-1">{restaurant.name}</h1>
+          <h1 className="md:text-2xl font-bold mb-1">{restaurant.name}</h1>
         </div>
         <div className="flex gap-2 text-[#16A286]">
           <Button variant="outline" size="sm" asChild>
-            <Link
-              // to={`tel:${restaurant.phone}`}
-              to="/review"
-              className="inline-flex items-center gap-2"
-            >
+            <Link to="/review" className="inline-flex items-center gap-2">
               <Pencil className="h-4 w-4" /> Review
             </Link>
           </Button>
@@ -226,15 +271,20 @@ const RestaurantDetails = () => {
         <img
           src={restaurant.images[0]}
           alt="Main restaurant view"
-          className="w-full h-64 md:h-[360px] object-cover rounded-lg"
+          className="w-full h-64 md:h-[560px] object-cover rounded-lg cursor-pointer"
+          onClick={() => openLightbox(0)}
         />
         <div className="grid grid-rows-3 gap-3">
           {restaurant.gallery.map((item, i) => (
-            <div key={i} className="relative overflow-hidden rounded-lg">
+            <div
+              key={i}
+              className="relative overflow-hidden rounded-lg group cursor-pointer"
+              onClick={() => openLightbox(lightboxImages.indexOf(item.src))}
+            >
               <img
                 src={item.src}
                 alt={item.label}
-                className="w-full h-24 md:h-[112px] object-cover"
+                className="w-full h-24 md:h-[175px] object-cover group-hover:scale-[1.02] transition-transform"
               />
               <div className="absolute inset-x-0 bottom-0 bg-black/50 flex items-center justify-between px-3 py-2 text-white bg-gradient-to-t from-black/50 to-transparent">
                 <span className="text-xs">{item.label}</span>
@@ -246,6 +296,63 @@ const RestaurantDetails = () => {
           ))}
         </div>
       </div>
+
+      {/* Lightbox Modal */}
+      {lightboxOpen && (
+        <Dialog
+          open={lightboxOpen}
+          onOpenChange={setLightboxOpen}
+          className="w-full max-w-4xl"
+        >
+          <DialogContent className="flex flex-col">
+            <DialogHeader>
+              <DialogTitle>Gallery</DialogTitle>
+              <DialogClose>
+                <X className="h-5 w-5" />
+              </DialogClose>
+            </DialogHeader>
+            <div className="relative p-4">
+              <img
+                src={lightboxImages[lightboxIndex]}
+                alt="Selected"
+                className="w-full max-h-[70vh] object-contain rounded-md"
+              />
+              <button
+                onClick={prevImage}
+                className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/60 text-white rounded-full p-2"
+                aria-label="Previous image"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </button>
+              <button
+                onClick={nextImage}
+                className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/60 text-white rounded-full p-2"
+                aria-label="Next image"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </button>
+            </div>
+            <div className="mt-2 flex gap-2 overflow-x-auto p-4 border-t">
+              {lightboxImages.map((src, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setLightboxIndex(idx)}
+                  className={`relative flex-shrink-0 rounded ${
+                    idx === lightboxIndex ? "ring-2 ring-teal-500" : ""
+                  }`}
+                  aria-label={`Select image ${idx + 1}`}
+                >
+                  <img
+                    src={src}
+                    alt={`Thumbnail ${idx + 1}`}
+                    className="h-16 w-24 object-cover rounded"
+                  />
+                </button>
+              ))}
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
 
       {/* Tabs */}
       <div className="flex gap-4 text-sm">
@@ -528,9 +635,12 @@ const RestaurantDetails = () => {
               <span>Tips/Q&amp;A ( 20 )</span>
               <span>All reviews ( {restaurant.reviews.toLocaleString()} )</span>
             </div>
-            <Button className="bg-teal-600 hover:bg-teal-700 text-white h-8 px-3 rounded-md">
+            <Link
+              to="/review"
+              className="bg-teal-600 hover:bg-teal-700 text-white flex justify-center items-center text-center h-8 px-3 rounded-md"
+            >
               Write a review
-            </Button>
+            </Link>
           </div>
         </CardHeader>
         <CardContent>
@@ -594,16 +704,18 @@ const RestaurantDetails = () => {
           </div>
         </CardContent>
       </Card> */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Reviews summary</CardTitle>
-          <CardDescription>
+      <div>
+        <div>
+          <div className="text-lg font-semibold text-black">
+            Reviews summary
+          </div>
+          <div className="text-sm text-muted-foreground leading-relaxed max-w-lg py-3">
             This summary was created by AI, based on recent reviews.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-            <div className="text-sm text-muted-foreground leading-relaxed">
+          </div>
+        </div>
+        <div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center ">
+            <div className="text-sm text-muted-foreground leading-relaxed max-w-lg py-3">
               Izakaya High Japanese Cuisine is popular for its warm and stylish
               atmosphere, making it ideal for special occasions or casual
               gatherings. Many travelers praise the food for its fresh
@@ -614,7 +726,7 @@ const RestaurantDetails = () => {
               exceptional dining experience is well-regarded, though some find
               the portions small.
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl">
               <SummaryItem icon={Utensils} title="Food" value="Artistic" />
               <SummaryItem icon={User} title="Service" value="Attentive" />
               <SummaryItem
@@ -625,8 +737,8 @@ const RestaurantDetails = () => {
               <SummaryItem icon={DollarSign} title="Value" value="High-end" />
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Back */}
       <Link

@@ -33,13 +33,7 @@ const Review = () => {
       " " +
       new Date().getFullYear()
   );
-  const companionOptions = [
-    "Business",
-    "Couples",
-    "Family",
-    "Friends",
-    "Solo",
-  ];
+  const companionOptions = ["Business", "Couples", "Family", "Friends", "Solo"];
   const [companions, setCompanions] = useState(["Family"]);
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
@@ -110,7 +104,9 @@ const Review = () => {
         {/* Rate experience */}
         <section>
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold">How would you rate your experience?</h2>
+            <h2 className="text-lg font-semibold">
+              How would you rate your experience?
+            </h2>
           </div>
           <div className="mt-4 flex gap-3">
             {Array.from({ length: 5 }, (_, i) => i + 1).map((val) => (
@@ -177,7 +173,11 @@ const Review = () => {
         <section className="space-y-3">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold">Write your review</h2>
-            <Button variant="link" className="text-teal-700 px-0" onClick={() => setTipsOpen(true)}>
+            <Button
+              variant="link"
+              className="text-teal-700 px-0"
+              onClick={() => setTipsOpen(true)}
+            >
               Review tips
             </Button>
           </div>
@@ -233,7 +233,9 @@ const Review = () => {
           <label className="block border rounded-md h-48 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-accent">
             <Camera className="h-5 w-5 text-muted-foreground" />
             <span className="text-sm">Click to add photos</span>
-            <span className="text-xs text-muted-foreground">or drag and drop</span>
+            <span className="text-xs text-muted-foreground">
+              or drag and drop
+            </span>
             <input type="file" multiple className="hidden" />
           </label>
         </section>
@@ -248,12 +250,15 @@ const Review = () => {
               className="mt-1"
             />
             <span>
-              I certify that this review is based on my own experience and is my genuine
-              opinion of this establishment and that I have no personal or business
-              relationship with this establishment, and have not been offered any
-              incentive or payment originating from the establishment to write this
-              review. I understand that we have a zero-tolerance policy on fake reviews.
-              <Button variant="link" className="px-1">Learn more about the consequences of review fraud.</Button>
+              I certify that this review is based on my own experience and is my
+              genuine opinion of this establishment and that I have no personal
+              or business relationship with this establishment, and have not
+              been offered any incentive or payment originating from the
+              establishment to write this review. I understand that we have a
+              zero-tolerance policy on fake reviews.
+              <Button variant="link" className="px-1">
+                Learn more about the consequences of review fraud.
+              </Button>
             </span>
           </label>
         </section>
@@ -272,7 +277,10 @@ const Review = () => {
       {/* Review tips modal */}
       {tipsOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="absolute inset-0 bg-black/50" onClick={() => setTipsOpen(false)} />
+          <div
+            className="absolute inset-0 bg-black/50"
+            onClick={() => setTipsOpen(false)}
+          />
           <div className="relative bg-white rounded-lg shadow-lg w-[90vw] max-w-md p-6">
             <button
               className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
@@ -281,7 +289,9 @@ const Review = () => {
             >
               <X className="h-5 w-5" />
             </button>
-            <h3 className="text-2xl font-bold mb-4">What makes a great review?</h3>
+            <h3 className="text-2xl font-bold mb-4">
+              What makes a great review?
+            </h3>
 
             <div className="space-y-4">
               <div>
@@ -315,7 +325,9 @@ const Review = () => {
               <p className="text-sm text-muted-foreground">
                 Manage this property and want to respond to a review?
               </p>
-              <Button variant="link" className="px-0">Use the management response form</Button>
+              <Button variant="link" className="px-0">
+                Use the management response form
+              </Button>
             </div>
           </div>
         </div>
