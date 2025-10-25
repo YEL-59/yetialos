@@ -51,7 +51,7 @@ const fallback = {
     "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1200&h=700&fit=crop",
     "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&h=400&fit=crop",
     "https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=600&h=400&fit=crop",
-    "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=600&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&h=400&fit=crop",
   ],
   gallery: [
     {
@@ -67,26 +67,68 @@ const fallback = {
     {
       label: "Menu",
       count: 24,
-      src: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=600&h=400&fit=crop",
+      src: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&h=400&fit=crop",
     },
   ],
 };
 
-const RatingBar = ({ label, value }) => (
-  <div className="flex items-center gap-3">
-    <span className="w-24 text-sm text-muted-foreground">{label}</span>
-    <div className="flex-1 h-2 rounded-full bg-gray-200">
-      <div
-        className="h-2 rounded-full bg-teal-600"
-        style={{ width: `${value * 20}%` }}
-      />
+const RatingBar = ({ label, value }) => {
+  const percentage = Math.min(100, Math.round((value / 5) * 100));
+  return (
+    <div className="flex items-center gap-3">
+      <span className="w-24 text-sm text-muted-foreground">{label}</span>
+      <div className="flex-1 h-2 rounded-full bg-muted/40 relative overflow-hidden">
+        <div
+          className="absolute left-0 top-0 h-full bg-green-600 rounded-full"
+          style={{ width: `${percentage}%` }}
+        />
+      </div>
+      <span className="text-sm font-medium">{value.toFixed(1)}</span>
     </div>
-    <span className="text-sm text-muted-foreground">{value.toFixed(1)}</span>
-  </div>
-);
+  );
+};
+
+// Distribution bar for Excellent/Good/Average/Poor/Terrible
+const DistributionBar = ({ label, count, total }) => {
+  const percentage = Math.min(100, Math.round((count / total) * 100));
+  return (
+    <div className="flex items-center gap-3">
+      <span className="w-20 text-sm text-muted-foreground">{label}</span>
+      <div className="flex-1 h-2 rounded-full bg-[#EAEAEA] relative overflow-hidden">
+        <div
+          className="absolute left-0 top-0 h-full bg-green-600 rounded-full"
+          style={{ width: `${percentage}%` }}
+        />
+      </div>
+      <span className="w-10 text-xs text-muted-foreground text-right">
+        {count}
+      </span>
+    </div>
+  );
+};
+
+// Category stat bar with star and value on the right
+const CategoryStatBar = ({ label, value }) => {
+  const percentage = Math.min(100, Math.round((value / 5) * 100));
+  return (
+    <div className="flex items-center gap-3">
+      <span className="w-24 text-sm text-muted-foreground">{label}</span>
+      <div className="flex-1 h-2 rounded-full bg-muted/40 relative overflow-hidden">
+        <div
+          className="absolute left-0 top-0 h-full bg-green-600 rounded-full"
+          style={{ width: `${percentage}%` }}
+        />
+      </div>
+      <div className="flex items-center gap-1">
+        <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+        <span className="text-sm font-medium">{value.toFixed(1)}</span>
+      </div>
+    </div>
+  );
+};
 
 const SummaryItem = ({ icon: Icon, title, value }) => (
-  <div className="flex items-center gap-3 rounded-lg border border-teal-600/40 px-4 py-3">
+  <div className="flex items-center gap-3 rounded-lg bg-[#FBF5F5] border border-teal-600/40 px-4 py-5">
     <div className="h-9 w-9 flex items-center justify-center rounded-md border border-teal-600/40">
       <Icon className="h-4 w-4 text-teal-700" />
     </div>
@@ -137,8 +179,24 @@ const RestaurantDetails = () => {
     }
   };
 
+  // Reviews data to match screenshot
+  const reviewDistribution = [
+    { label: "Excellent", count: 3332 },
+    { label: "Good", count: 250 },
+    { label: "Average", count: 164 },
+    { label: "Poor", count: 83 },
+    { label: "Terrible", count: 59 },
+  ];
+  const reviewTotal = reviewDistribution.reduce((s, d) => s + d.count, 0);
+  const categoryStats = [
+    { label: "Service", value: 4.9 },
+    { label: "Food", value: 4.9 },
+    { label: "Value", value: 4.9 },
+    { label: "Atmosphere", value: 4.9 },
+  ];
+
   return (
-    <div className="max-w-6xl mx-auto space-y-8">
+    <div className="container mx-auto space-y-8">
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
@@ -146,12 +204,13 @@ const RestaurantDetails = () => {
         </div>
         <div className="flex gap-2 text-[#16A286]">
           <Button variant="outline" size="sm" asChild>
-            <a
-              href={`tel:${restaurant.phone}`}
+            <Link
+              // to={`tel:${restaurant.phone}`}
+              to="/review"
               className="inline-flex items-center gap-2"
             >
               <Pencil className="h-4 w-4" /> Review
-            </a>
+            </Link>
           </Button>
           <Button variant="outline" size="sm" className="gap-2">
             <Share2 className="h-4 w-4" /> Share
@@ -461,36 +520,51 @@ const RestaurantDetails = () => {
       </div>
 
       {/* Reviews Section */}
-      <Card id="reviews">
-        <CardHeader>
-          <CardTitle className="text-xl">Reviews</CardTitle>
-          <CardDescription>
-            Trusted by {restaurant.reviews.toLocaleString()} diners
-          </CardDescription>
+      <Card id="reviews" className="bg-[#FBF5F5] border-teal-100">
+        <CardHeader className="pb-3">
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-xl">Reviews</CardTitle>
+            <div className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
+              <span>Tips/Q&amp;A ( 20 )</span>
+              <span>All reviews ( {restaurant.reviews.toLocaleString()} )</span>
+            </div>
+            <Button className="bg-teal-600 hover:bg-teal-700 text-white h-8 px-3 rounded-md">
+              Write a review
+            </Button>
+          </div>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Left side - Overall rating */}
-            <div className="space-y-6">
-              <div className="flex items-center gap-4">
-                <span className="text-4xl font-bold">{restaurant.rating}</span>
-                <span className="text-lg text-muted-foreground">Excellent</span>
-              </div>
-              <div className="space-y-3">
-                <RatingBar label="Food" value={4.2} />
-                <RatingBar label="Service" value={4.1} />
-                <RatingBar label="Ambience" value={4.3} />
-                <RatingBar label="Value" value={3.9} />
-              </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start py-6">
+            {/* Left: overall rating */}
+            <div className="flex items-center gap-3">
+              <Star className="h-5 w-5 text-yellow-400 fill-yellow-400" />
+              <span className="text-2xl font-semibold">
+                {restaurant.rating}
+              </span>
+              <span className="text-sm text-muted-foreground">Excellent</span>
             </div>
 
-            {/* Right side - Additional ratings */}
+            {/* Middle: distribution bars */}
             <div className="space-y-3">
-              <RatingBar label="Overall" value={4.5} />
-              <RatingBar label="Food" value={4.2} />
-              <RatingBar label="Service" value={4.1} />
-              <RatingBar label="Ambience" value={4.3} />
-              <RatingBar label="Value" value={3.9} />
+              {reviewDistribution.map((item) => (
+                <DistributionBar
+                  key={item.label}
+                  label={item.label}
+                  count={item.count}
+                  total={reviewTotal}
+                />
+              ))}
+            </div>
+
+            {/* Right: category bars with stars */}
+            <div className="space-y-3">
+              {categoryStats.map((item) => (
+                <CategoryStatBar
+                  key={item.label}
+                  label={item.label}
+                  value={item.value}
+                />
+              ))}
             </div>
           </div>
         </CardContent>
